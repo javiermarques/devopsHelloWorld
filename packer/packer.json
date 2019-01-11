@@ -1,0 +1,46 @@
+{
+    "variables": {
+        "aws_access_key": "",
+        "aws_secret_key": "",
+        "region": "eu-west-1"
+    },
+    "builders": [
+        {
+            "type": "amazon-ebs",
+            "region": "{{user `region`}}",
+            "instance_type": "t2.micro",
+            "ssh_username": "ec2-user",
+            "source_ami": "ami-09693313102a30b2c",
+            "ami_name": "java-{{isotime \"2006-01-02-15.04.05\"}}",
+            "associate_public_ip_address": true,
+            "access_key": "{{user `aws_access_key`}}",
+            "secret_key": "{{user `aws_secret_key`}}",
+            "tags": {
+                "version": "amzn2",
+                "Name": "java-{{isotime \"2006-01-02-15.04.05\"}}",
+                "Description": "Java linux test"
+            }
+        }
+    ],
+    "provisioners": [
+        {
+            "type": "file",
+            "source": "app.service",
+            "destination": "/tmp/app.service"
+        },
+        {
+            "type": "file",
+            "source": "awscli.conf",
+            "destination": "/tmp/awscli.conf"
+        },
+        {
+            "type": "file",
+            "source": "awslogs.conf",
+            "destination": "/tmp/awslogs.conf"
+        },
+        {
+            "type": "shell",
+            "script": "init.sh"
+        }
+    ]
+}

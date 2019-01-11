@@ -1,0 +1,12 @@
+[Unit]
+Description=Helloworld App
+After=cloud-final.service
+[Service]
+WorkingDirectory=/home/app
+SyslogIdentifier=HelloWorld
+EnvironmentFile=/home/app/environment
+ExecStart=/bin/bash -c "/usr/bin/java -jar /usr/bin/helloworld.jar"
+User=app
+Type=simple
+[Install]
+WantedBy=multi-user.target
